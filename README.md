@@ -1,3 +1,6 @@
+![image](https://github.com/user-attachments/assets/f7af3727-e437-44cd-83ca-ab5a8c432b5c)
+
+
 # 음악 스트리밍 사이트, MangoZ
 
 ## 📋 프로젝트 개요
