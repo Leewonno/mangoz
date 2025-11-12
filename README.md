@@ -75,7 +75,7 @@ project2/
 
 <br />
 
-## 🛠️ 설치 및 실행
+## 🏃 설치 및 실행
 
 ### 설치 방법
 
@@ -114,6 +114,7 @@ npm start
 <br />
 
 ## 🌏 서비스 화면
+![image](https://github.com/user-attachments/assets/827422cc-6e0d-44b8-ac48-7b1dda2b40d1)
 
 <!-- ![image](https://github.com/Leewonno/project2/assets/105614390/7c640344-9501-4b73-8f9c-b457c8e6a13d)
 ![image](https://github.com/Leewonno/project2/assets/105614390/bab034d9-e454-4635-9789-bff7c056a497)
