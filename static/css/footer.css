@@ -1,0 +1,74 @@
+footer{
+    width: 100%;
+    border-top: 1px solid #000000; 
+}
+@font-face {
+    font-family: 'NanumSquareNeo-Variable';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_11-01@1.0/NanumSquareNeo-Variable.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.footer_box{
+    width: 1200px;
+    height: 100px;
+    margin: 0 auto;
+    background-color: #ffffff; 
+    padding: 20px 0px 100px 0px; 
+    margin-bottom: 120px;
+}
+
+footer a {
+    text-decoration: none;
+    color: white;
+}
+
+footer .notice_box{
+    display: flex;
+    margin-bottom: 20px;
+    
+}
+
+footer .notice{
+    padding-left: 10px;
+    margin-right: 10px;
+    border-left: 1px solid lightgray;
+    /* margin-top: 20px; */
+}
+
+footer .notice:nth-child(1){
+    padding-left: 0px;
+    margin-right: 10px;
+    border-left: 0px;
+    /* margin-top: 20px; */
+}
+
+footer .notice a{
+    text-decoration: none;
+    color: rgb(0, 0, 0);
+}
+
+
+footer .left{
+
+}
+
+footer .left .team{
+    color: rgb(0, 0, 0);
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+footer .left .team_member{
+    color: rgb(0, 0, 0);
+}
+
+footer .right{
+
+}
+@media screen and (max-width: 650px) {
+    .footer_box{
+        width: 100%;
+    }
+}

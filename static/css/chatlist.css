@@ -1,0 +1,234 @@
+.talk_section {
+  display: flex;
+  justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 100px;
+}
+
+.talk_list {
+  display: flex;
+  flex-direction: column;
+  width: 1200px;
+}
+
+.talk_list .column_first {
+  margin-bottom: 20px;
+}
+
+.chatlist_title{
+  font-size: 20px;
+  padding-bottom: 5px;
+}
+
+.talk_list .column_first .my_talk {
+  background-color: white;
+  width: 100%;
+  min-height: 250px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+  border-radius: 10px;
+}
+
+.talk_list .column_second {
+  display: flex;
+  justify-content: space-between;
+}
+
+.talk_list .column_second .category_talk {
+  background-color: white;
+  width: 590px;
+  height: 300px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+  position: relative;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.talk_list .column_second .recommand_talk {
+  background-color: white;
+  width: 590px;
+  height: 300px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.joinchat {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+#s {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.recommand {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.talk_section img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  border: 1px solid #e5e5e5;
+}
+
+.my_talk img {
+  position: absolute;
+}
+
+.talk_section .imgdiv {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 160px;
+  height: 160px;
+  transition: all 0.3s;
+  margin: 10px;
+}
+.talk_section .imgdiv:hover {
+  transform: scale(1.2);
+  display: flex;
+  flex-direction: column;
+}
+
+.column_second .Jmember,
+.recommand_talk .Jmember {
+  visibility: hidden;
+  margin-top: 5px;
+}
+.imgdiv:hover p {
+  display: flex;
+}
+.imgdiv:hover .Jmember {
+  visibility: visible;
+}
+
+.category_talk .imgdiv,
+.recommand .imgdiv {
+  width: 100px;
+  height: 100px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.category_talk .imgdiv p,
+.recommand .imgdiv p {
+  width: 82%;
+  height: 82%;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  top: -4px;
+}
+
+.category_talk img,
+.recommand img {
+  width: 82%;
+  height: 100%;
+  /* margin-top: 18%; */
+}
+.talk_section p {
+  text-align: center;
+  cursor: pointer;
+}
+.my_talk div {
+  margin-left: 5px;
+  margin-right: 5px;
+  margin-bottom: 10px;
+}
+
+.imgdiv p {
+  position: absolute;
+  display: none;
+  justify-content: center;
+  align-items: center;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background-color: rgb(0, 0, 0, 0.6);
+  color: white;
+}
+
+.buttonDiv {
+  position: absolute;
+  top: 5%;
+  left: 3%;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.buttonDiv button {
+    height: 32px;
+    padding: 0 15px;
+    font-size: 12px;
+    line-height: 32px;
+    text-align: center;
+    border: 0.4px solid rgba(0,0,0,.2);
+    border-radius: 16px;
+    display: inline-flex;
+    align-items: center;
+    background-color: white;
+    cursor: pointer;
+}
+
+.buttonDiv button:hover {
+  background-color: #ffc353;
+  color: white;
+}
+
+
+.sp {
+  font-size: 18px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 651px) {
+  .talk_list {
+    width: auto;
+    display: flex;
+    align-items: center;
+  }
+
+  .talk_section img {
+    width: 100%;
+    height: 100%;
+  }
+
+  .category_talk img,
+  .recommand img {
+    width: 82%;
+    height: 100%;
+  }
+
+  .column_first {
+    width: 590px;
+    display: flex;
+    justify-content: center;
+  }
+  .column_second {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .category_talk {
+    margin-bottom: 20px;
+  }
+  .talk_list .column_second .recommand_talk span {
+    font-size: medium;
+  }
+}

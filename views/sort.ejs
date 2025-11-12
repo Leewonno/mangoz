@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>정렬</title>
+</head>
+<body>
+    
+    <%- contentFor('body') %>
+    <section class="sort_section">
+        <div class="song_category">
+            <div class="sort_menu">
+                <ul class="lay_menu">
+                    <li>
+                            <span onclick="sortSongs('date')">
+                                <span>최신곡</span>
+                            </span>
+                    </li>
+                    <li>
+                            <span onclick="sortSongs('like')">
+                                <span>인기곡</span>
+                            </span>
+                    </li>
+                    <li>
+                            <span onclick="startGenreToggle()">
+                                <span>장르별</span>
+                            </span>
+                    </li>
+                </ul>
+            </div>
+            <div id="genre_menu" class="genre_menu" style="display: none;">
+                <ul class="genre_ul">
+                    <% for (let i = 0; i < genre.length; i++) { %>
+                        <li class="genre_li">
+                            <span class="genre_a" onclick="sortByGenre('<%= genre[i] %>');"><%= genre[i] %></span>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+
+            <table class="list">
+                <thead class="list_thead">
+                    <tr class="defult">
+                        <th>
+                            <div class="wrap">
+                                <span class="rank">순서</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="wrap_song_album">
+                                <span class="song">앨범</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="wrap_song">
+                                <span class="song">곡이름</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="wrap_song">
+                                <span class="song">아티스트</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="wrap_song">
+                                <span class="song">재생시간</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="wrap_song">
+                                <span class="song">듣기</span>
+                            </div>
+                        </th>
+                        <th>
+                            <div class="wrap_song">
+                                <span class="song">재생목록</span>
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="song_tbody">
+                    <tr class="song_detail">
+                        <td>
+                            <div class="wrap">
+                                <span class="ranck"></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrap_song">
+                                <a href="#" class="song_image"></a>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="wrap_song">
+                                <div class="song_names">
+                                    <a href="#"></a>
+                                </div>
+                                <br />
+                                <div class="artist">
+                                    <a href="#"></a>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        
+
+        
+        
+    </section>
+
+    <%- contentFor('player') %>
+
+    <script id="sc">
+        
+        // sortSongs('date'); // 기본적으로 날짜 순으로 정렬
+
+        var sort = window.location.search; 
+        var string = new URLSearchParams(sort);
+        var sortBy = string.get("sort"); // "date"
+        console.log(sortBy);
+        sortSongs(sortBy)
+        
+        function sortSongs(sortBy) {
+            axios({
+                method: "get",
+                url: `/song/sort?sort=${sortBy}`,
+            }).then((res) => {
+                const tbody = document.querySelector("tbody");
+
+                console.log(tbody.firstChild)
+                while (tbody.firstChild) {
+                    tbody.removeChild(tbody.firstChild);
+                }
+                console.log(res.data.songs.length);
+                for (let i = 0; i < res.data.songs.length; i++) {
+                    const song = res.data.songs[i];
+                    const row = document.createElement("tr");
+                    row.className = "song_detail";
+
+                    const rankCell = document.createElement("td");
+                    const albumCell = document.createElement("td");
+                    const titleCell = document.createElement("td");
+                    const artistCell = document.createElement("td");
+                    const playtimeCell = document.createElement("td");
+                    const listenButtonCell = document.createElement("td");
+                    const playlistButtonCell = document.createElement("td");
+
+                    rankCell.innerHTML = `<div class="wrap"><span class="rank">${i + 1}</span></div>`;
+                    albumCell.innerHTML = `<div class="wrap_song"><a href="#"><img src="${song.cover_url}"></a></div>`;
+                    titleCell.innerHTML = `<div class="wrap_song"><div class="song_names"><a href="/song?id=${song.id}">${song.title}</a></div></div>`;
+                    artistCell.innerHTML = `<div class="wrap_song"><div class="artist">${song.artist}</div></div>`;
+                    playtimeCell.innerHTML = `<div class="wrap_song"><div class="replay time">${song.playtime}</div></div>`;
+                    listenButtonCell.innerHTML = `<div class="wrap_song"><button type="button" class="song_detail_button" onclick="music(${song.id})"><i class="fa-solid fa-play" style="color: #FCD06B" id="song_play_icon"></i></button></div>`;
+                    playlistButtonCell.innerHTML = `<div class="wrap_song"><button type="button" class="song_list_button" onclick="modelOpenBtn(${song.id})"><i class="fa-solid fa-bars" style="color: #FCD06B"></i></button></div>`;
+
+                    row.appendChild(rankCell);
+                    row.appendChild(albumCell);
+                    row.appendChild(titleCell);
+                    row.appendChild(artistCell);
+                    row.appendChild(playtimeCell);
+                    row.appendChild(listenButtonCell);
+                    row.appendChild(playlistButtonCell);
+
+                    tbody.appendChild(row);
+                    
+                    const listModal = document.querySelector("#myPlaylist");
+                    const modalOpen = document.querySelector(".song_list_button");
+                    const modalClose = document.querySelector(".playlistButton");
+
+
+                    modalOpen.addEventListener("click", (e) => {
+                        listModal.classList.remove('hidden');
+                    });
+
+                    modalClose.addEventListener("click", (e) => {
+                        listModal.classList.add('hidden');
+                    });
+                    listModal.addEventListener("click", (e) => {
+                        listModal.classList.add('hidden');
+                    })
+                }
+
+                // const newURL = `/sort?sort=${sortBy}`;
+                // window.history.pushState(null, null, newURL);
+
+                
+            })
+            
+        }
+
+        
+        
+        function startGenreToggle() {
+            var genreMenu = document.getElementById("genre_menu");
+           
+            console.log("Before toggle: " + genreMenu.style.display);
+            if (genreMenu.style.display === "none" || genreMenu.style.display === "") {
+                genreMenu.style.display = "block";
+            } else {
+                genreMenu.style.display = "none";
+            }
+            console.log("After toggle: " + genreMenu.style.display);        
+        }
+
+        async function sortByGenre(genre) {
+            try {
+
+                const encodedGenre = encodeURIComponent(genre);
+
+                console.log("Fetching data for genre: " + encodedGenre);
+                console.log(encodedGenre);
+
+                const res = await axios({
+                    method: "get",
+                    url: `/song/sort/genre?genre=${encodedGenre}`,
+                });
+
+                console.log(res);
+                const tbody = document.querySelector("tbody");
+
+                console.log('tbody.firstChild', tbody.firstChild);
+
+                const songDetailRows = document.querySelectorAll(".song_detail");
+                songDetailRows.forEach((row) => {
+                    tbody.removeChild(row);
+                });
+
+                for (let i = 0; i < res.data.songs.length; i++) {
+                    const song = res.data.songs[i];
+                    const row = document.createElement("tr");
+                    row.className = "song_detail";
+
+                    const rankCell = document.createElement("td");
+                    const albumCell = document.createElement("td");
+                    const titleCell = document.createElement("td");
+                    const artistCell = document.createElement("td");
+                    const playtimeCell = document.createElement("td");
+                    const listenButtonCell = document.createElement("td");
+                    const playlistButtonCell = document.createElement("td");
+
+                    rankCell.innerHTML = `<div class="wrap"><span class="rank">${i + 1}</span></div>`;
+                    albumCell.innerHTML = `<div class="wrap_song"><a href="#"><img src="${song.cover_url}"></a></div>`;
+                    titleCell.innerHTML = `<div class="wrap_song"><div class="song_names"><a href="/song?id=${song.id}">${song.title}</a></div></div>`;
+                    artistCell.innerHTML = `<div class="wrap_song"><div class="artist">${song.artist}</div></div>`;
+                    playtimeCell.innerHTML = `<div class="wrap_song"><div class="replay time">${song.playtime}</div></div>`;
+                    listenButtonCell.innerHTML = `<div class="wrap_song"><button type="button" class="song_detail_button" onclick="music(${song.id})"><i class="fa-solid fa-play" style="color: #FCD06B" id="song_play_icon"></i></button></div>`;
+                    playlistButtonCell.innerHTML = `<div class="wrap_song"><button type="button" class="song_list_button" onclick="modelOpenBtn(${song.id})"><i class="fa-solid fa-bars" style="color: #FCD06B"></i></button></div>`;
+
+                    row.appendChild(rankCell);
+                    row.appendChild(albumCell);
+                    row.appendChild(titleCell);
+                    row.appendChild(artistCell);
+                    row.appendChild(playtimeCell);
+                    row.appendChild(listenButtonCell);
+                    row.appendChild(playlistButtonCell);
+
+                    tbody.appendChild(row);
+
+                    const listModal = document.querySelector("#myPlaylist");
+                    const modalOpen = document.querySelector(".song_list_button");
+                    const modalClose = document.querySelector(".playlistButton");
+
+
+                    modalOpen.addEventListener("click", (e) => {
+                        listModal.classList.remove('hidden');
+                    });
+
+                    modalClose.addEventListener("click", (e) => {
+                        listModal.classList.add('hidden');
+                    });
+                    listModal.addEventListener("click", (e) => {
+                        listModal.classList.add('hidden');
+                    })
+                }
+
+              // URL 업데이트 및 히스토리 관리
+                const newURL = `/sort/${genre}`;
+                window.history.pushState(null, null, newURL);
+
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+
+
+    </script>
+</body>
+</html>

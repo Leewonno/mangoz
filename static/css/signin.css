@@ -1,0 +1,141 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.signinMain {
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    margin-bottom: 50px;
+}
+
+.signinMain .signinPage {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 600px;
+    border: 1px solid #FCD06B;
+    border-radius: 15px;
+    box-shadow: 5px 5px 5px rgb(0, 0, 0, 0.02);
+}
+
+.signinMain .signinLogo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    height: 200px;
+}
+
+.signinMain .signinCover {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    border: 1px solid #FCD06B;
+    width: 400px;
+    height: 200px;
+    border-radius: 15px;
+    
+}
+
+.signinMain .signinForm {
+    display: flex;
+    flex-direction: column;
+}
+
+.signinMain #id, .signinMain #pw {
+    width: 300px;
+    height: 50px;
+    border: none;
+    border-bottom: 1px solid black;
+    outline: none;
+}
+
+.signinMain #id:focus, .signinMain #pw:focus {
+    border-bottom: 2px solid #FCD06B;
+}
+
+.signinMain .signinPageBtns {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    top: 200px;
+    
+}
+
+.signinMain #signinBtn {
+    width: 180px;
+    height: 70px;
+    margin: 20px;
+    background-color: #FCD06B;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+
+.signinMain .roadSignup {
+    width: 180px;
+    height: 70px;
+    margin: 20px;
+    background-color: white;
+    border: 1px solid #FCD06B;
+    color:#FCD06B;
+    cursor: pointer;
+}
+
+.roadSignup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+
+/* 반응형 */
+@media screen and (max-width: 650px) {
+    .loginSection{
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .loginSection .signinMain {
+        width: 80%;
+        margin-top: 30px;
+    }
+
+    .signinMain .signinPage {
+        width: 80%;
+        height: 500px;
+        border-radius: 16px;
+    }
+
+    .signinMain .signinCover {
+        width: 50%;
+    }
+
+    .signinMain .signinForm {
+        width: 80%;
+    }
+
+    .signinMain #id, .signinMain #pw {
+        width: 100%;
+    }
+
+    .signinMain .signinPageBtns {
+        display: flex;
+        top: 170px;
+        width: 90%;
+        justify-content: space-between;
+    }
+
+    .signinMain #signinBtn, .signinMain .roadSignup {
+        height: 50px;
+    }
+}

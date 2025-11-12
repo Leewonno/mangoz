@@ -1,0 +1,638 @@
+.index_section {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 100px;
+}
+
+.index_section .main_page a {
+    text-decoration: none;
+    color: #545454;
+}
+
+.main_page{
+    width: 1200px;
+    /* display: grid;
+    padding-left: 50px;
+    padding-right: 50px; */
+}
+
+
+/* div 요소 별 제목 */
+.index_section .main_page .recent_header, .popular_header, .talk_headers, .genre_header, .playlist_header{
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 1fr;
+    margin-top: 60px;
+}
+.recent_div{
+    color: rgb(51, 51, 51); 
+    font-weight: 900;
+    font-size: 30px;
+}
+.talk_div, .genre_div, .playlist_div, .popular_div{
+    /* color: rgb(51, 51, 51); 
+    font-weight: 900;
+    font-size: 30px;
+    margin-top: 30px;
+    margin-left: 10px; */
+    color: rgb(51, 51, 51); 
+    font-weight: 900;
+    font-size: 30px;
+}
+/* 더보기 버튼 -> 장르 버튼 분리 필요 */
+.recent_btn, .popular_btn, .genre_btn, .talk_btn{
+    cursor: pointer;
+    width: 70px;
+    height: 30px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(119, 119, 119);
+    border-radius: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* 더보기 버튼 호버 */
+.recent_btn:hover {
+    background-color: #f6c85d;
+    border-color: #f6c85d;
+    color: #ffffff;
+}
+.recent_btn:hover a {
+    color: #ffffff;
+}
+.popular_btn:hover {
+    background-color: #f6c85d;
+    border-color: #f6c85d;
+    color: #ffffff;
+}
+.popular_btn:hover a {
+    color: #ffffff;
+}
+.genre_btn:hover {
+    background-color: #f6c85d;
+    border-color: #f6c85d;
+    color: #ffffff;
+}
+.talk_btn:hover {
+    background-color: #f6c85d;
+    border-color: #f6c85d;;
+    color: #ffffff;
+}
+.talk_btn:hover a {
+    color: #ffffff;
+}
+
+/* 장르 버튼 */
+.genre_menu_btn .genre_menu_ul {
+    list-style: none;
+    display: grid;
+    grid-auto-flow: column;
+    margin-top: 0;
+    justify-content: end;
+}
+
+.genre_menu_btn .genre_menu_ul .genre_menu_li {
+    cursor: pointer;
+    height: 25px;
+    width: 60px;
+    margin-bottom: 20px;
+    font-size: 15px;
+    background-color: rgb(255, 255, 255);
+    border: 1px solid rgb(119, 119, 119);
+    border-radius: 15px;
+    margin-left: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.genre_menu_btn .genre_menu_ul .genre_menu_li:hover {
+    background-color: #f6c85d;
+    border-color: #f6c85d;;
+    color: #ffffff;
+}
+
+/* 앨범 커버 호버하면 재생 버튼 */
+
+.imgBox {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    position: relative;
+}
+
+.imgBox > img {
+    width: 130px;
+    height: 130px;
+    height: auto;
+    border-radius: 5px;
+    box-shadow: 5px 5px 5px 0px rgb(172, 172, 172, 0.1);
+    border: 1px solid #e5e5e5;
+}
+.imgBox > .cover_img {
+    display: none;
+}
+
+.imgBox:hover .cover_img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    background-color: rgb(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+
+/* 1. 장르순 */
+
+.index_section .row_first .recent_music {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    border-radius: 5px;
+    margin-top: 0;
+    text-align: center;
+    border: #e5e5e5 solid 1px;
+    box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+}
+.index_section .row_first .recent_music .recent_element {
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    margin: 20px;
+    flex-direction: column;
+}
+.index_section .row_first .recent_music .recent_element > a {
+    text-decoration: none;
+}
+
+.index_section .row_first .recent_music .recent_title {
+    margin-top: 10px;
+    font-size: 16px; 
+    color: #444343;
+    
+}
+.index_section .row_first .recent_music .recent_artist {
+    font-size: 14px; 
+    color: #676767;
+}
+
+/* 2. 인기순  */
+.index_section .row_fifth .popular_music {
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    border-radius: 5px;
+    margin-top: 0;
+    text-align: center;
+    border: #e5e5e5 solid 1px;
+    box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+}
+
+.index_section .row_fifth .popular_music .popular_element {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+}
+
+.index_section .row_fifth .popular_music .popular_element > a {
+    text-decoration: none;
+}
+
+.index_section .row_fifth .popular_music .popular_element > img {
+    width: 100%; 
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.index_section .row_fifth .popular_music .popular_title {
+    margin-top: 10px;
+    font-size: 16px; 
+    color: #444343;
+}
+
+.index_section .row_fifth .popular_music .popular_artist {
+    font-size: 14px; 
+    color: #676767;
+}
+
+.index_section .row_fifth .popular_music .popular_element .popular_like {
+    display: flex;
+    color: #676767;
+    margin-bottom: 5px;
+}
+
+.index_section .row_fifth .popular_music .popular_element .popular_like > i, .popular_like_cnt {
+    margin: 3px;
+}
+
+
+/* 3. 톡방 */
+.index_section .row_second .talk_room {
+    background: rgb(255, 255, 255);
+    width: 100%;
+    height: auto;
+    display: grid;
+    border: #e5e5e5 solid 1px;
+    grid-template-columns: repeat(6, 1fr); 
+    border-radius: 5px;
+    margin-top: 0;
+    text-align: center;
+    box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+}
+
+.index_section .row_second .talk_room .talk_room_element {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+}
+
+.index_section .row_second .talk_room .talk_room_element > a {
+    text-decoration: none;
+}
+
+.index_section .row_second .talk_room .talk_room_element > img {
+    width: 130px;
+    height: 130px;
+    object-fit: cover; 
+    border: #e5e5e5 solid 1px;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+.index_section .row_second .talk_room .talk_room_element .talk_room_name {
+    margin-top: 10px;
+    font-size: 16px; 
+    color: #444343;
+}
+
+.index_section .row_second .talk_room .talk_room_element .talk_room_tag {
+    font-size: 8px; 
+    color: #676767;
+}
+/* 3. 장르  */
+.index_section .row_third .genre_music {
+    background: rgb(255, 255, 255);
+    width: 100%;
+    height: auto;
+    display: grid;
+    border: #e5e5e5 solid 1px;
+    grid-template-columns: repeat(6, 1fr); 
+    border-radius: 5px;
+    margin-top: 0;
+    text-align: center;
+    box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+}
+
+.index_section .row_third .genre_music .genre_element {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+}
+
+.index_section .row_third .genre_music .genre_element > a {
+    text-decoration: none;
+}
+
+.index_section .row_third .genre_music .genre_element > img {
+    width: 100%; 
+    height: auto;
+    border-radius: 5px;
+    margin-bottom: 20px;
+}
+
+.index_section .row_third .genre_music .genre_title {
+    margin-top: 10px;
+    font-size: 16px; 
+    color: #444343;
+}
+
+.index_section .row_third .genre_music .genre_artist {
+    font-size: 14px; 
+    color: #676767;
+}
+
+/* 4. 플레이리스트  */
+.index_section .row_fourth .recommand_playlist {
+    background: white;
+    width: 100%;
+    height: auto;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr); 
+    margin-top: 20px;
+    border-radius: 5px;
+    text-align: center;
+    border: #e5e5e5 solid 1px;
+    box-shadow: 5px 5px 5px rgb(172, 172, 172, 0.1);
+}
+
+.index_section .row_fourth .recommand_playlist .playlist_element {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column; 
+    align-items: center;
+    text-align: center;
+    margin: 20px;
+}
+.index_section .row_fourth .recommand_playlist .playlist_element .playlist_cover-1 {
+    display: grid;
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto; 
+    width: 130px;
+    height: 130px;
+    margin-top: 20px;
+}
+
+.index_section .row_fourth .recommand_playlist .playlist_element .playlist_cover-1 img {
+    width: 100%;
+    height: auto;
+    object-fit: cover; 
+    border-radius: 2.5px;
+}
+
+.index_section .row_fourth .recommand_playlist .playlist_element > .playlist_cover-2  img{
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+
+.index_section .row_fourth .recommand_playlist .playlist_element .playlist_name {
+    margin-top: 30px;
+    color: #444343;
+}
+
+.index_section .row_fourth .recommand_playlist .playlist_element .playlist_like {
+    display: flex;
+    margin-top: 5px;
+}
+
+.index_section .row_fourth .recommand_playlist .playlist_element .playlist_like > i, .like_cnt {
+    margin: 3px;
+    color: #676767;
+
+}
+.index_section .row_fourth .recommand_playlist .playlist_element .playlist_like > .like_cnt {
+    font-size: 14px;
+}
+
+/* 앨범 커버 호버하면 재생 버튼 */
+
+.playlist_cover-1 {
+
+    position: relative;
+}
+
+.playlist_cover-1 > img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+.playlist_cover-1 > .playlist_cover_img {
+    display: none;
+}
+
+.playlist_cover-1:hover .playlist_cover_img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    background-color: rgb(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+.playlist_cover-2 {
+    position: relative;
+    width: 130px;
+    height: 130px;
+    margin-top: 20px;
+}
+
+.playlist_cover-2 > img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px;
+}
+.playlist_cover-2 > .playlist_cover_img {
+    display: none;
+}
+
+.playlist_cover-2:hover .playlist_cover_img{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top:0;
+    background-color: rgb(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+}
+
+@media screen and (max-width: 650px) {
+    .index_section{
+        margin-top: 50px;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 100px;
+    }
+    
+    .index_section .main_page{
+        flex-direction: column;
+        width: 90%;
+        align-items: center;
+    }
+    .imgBox {
+        width: 130px;
+        height: 130px;
+        margin-bottom: 20px;
+        border-radius: 5px;
+        position: relative;
+    }
+    
+    .imgBox > img {
+        width: 130px;
+        height: 130px;
+        height: auto;
+        border-radius: 5px;
+    }
+    
+    /* 1. 최신순 */
+    .index_section .row_first .recent_music{
+        grid-template-columns: repeat(2, 1fr); 
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: grid;
+    }
+
+    .index_section .row_first .recent_music .recent_element {
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        margin: 30px;
+    }
+    .index_section .row_first .recent_music .recent_title {
+        margin-top: 10px;
+        font-size: 16px; 
+        color: #444343;
+        
+    }
+    .index_section .row_first .recent_music .recent_artist {
+        font-size: 14px; 
+        color: #676767;
+    }
+
+        .index_section .row_first .recent_music{
+        grid-template-columns: repeat(2, 1fr); 
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: grid;
+    }
+
+    .index_section .row_first .recent_music .recent_element {
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        margin: 30px;
+    }
+    .index_section .row_first .recent_music .recent_title {
+        margin-top: 10px;
+        font-size: 16px; 
+        color: #444343;
+        
+    }
+    .index_section .row_first .recent_music .recent_artist {
+        font-size: 14px; 
+        color: #676767;
+    }
+
+
+    /*  2. 인기순 */
+    .index_section .row_fifth .popular_music{
+        grid-template-columns: repeat(2, 1fr); 
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: grid;
+    }
+
+    .index_section .row_fifth .popular_music .popular_element {
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        margin: 30px;
+    }
+    .index_section .row_fifth .popular_music .popular_title {
+        margin-top: 10px;
+        font-size: 16px; 
+        color: #444343;
+        
+    }
+    .index_section .row_fifth .popular_music .popular_artist {
+        font-size: 14px; 
+        color: #676767;
+    }
+
+    /* 3. 아티스트 톡방 */
+    .index_section .row_second .talk_room{
+        grid-template-columns: repeat(2, 1fr); 
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: grid;
+    }
+
+    .index_section .row_second .talk_room .talk_room_element {
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        margin: 30px;
+    }
+    .index_section .row_second .talk_room .talk_room_name {
+        margin-top: 10px;
+        font-size: 16px; 
+        color: #444343;
+        
+    }
+    .index_section .row_second .talk_room .talk_room_tag {
+        font-size: 14px; 
+        color: #676767;
+    }
+
+    /* 4. 장르순 */
+    .index_section .row_third .genre_music{
+        grid-template-columns: repeat(2, 1fr); 
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: grid;
+    }
+
+    .index_section .row_third .genre_music .genre_element {
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        margin: 30px;
+    }
+    .index_section .row_third .genre_music .genre_title {
+        margin-top: 10px;
+        font-size: 16px; 
+        color: #444343;
+        
+    }
+    .index_section .row_third .genre_music .genre_artist {
+        font-size: 14px; 
+        color: #676767;
+    }
+
+    /* 5. 플레이리스트 */
+    .index_section .row_fourth .recommand_playlist{
+        grid-template-columns: repeat(2, 1fr); 
+        text-align: center;
+        width: 100%;
+        height: auto;
+        display: grid;
+    }
+
+    .index_section .row_fourth .recommand_playlist .playlist_element {
+        cursor: pointer;
+        align-items: center;
+        text-align: center;
+        margin: 20px;
+    }
+    .index_section .row_fourth .recommand_playlist .playlist_name {
+        margin-top: 5px;
+        font-size: 16px; 
+        color: #444343;
+        
+    }
+    .index_section .row_fourth .recommand_playlist .playlist_like {
+        font-size: 14px; 
+        color: #676767;
+    }
+
+
+}

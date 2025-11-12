@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>채팅방 목록</title>
+    <link rel="stylesheet" href="/css/chat.css" />
+ 
+  </head>
+  <body>
+    <%- contentFor('body') %>
+    <section class="talk_section">
+      <div class="talk_list">
+        <div class="column_first">
+          <div class="chatlist_title">참여중인톡방</div>
+          <div class="my_talk">
+            <div class="joinchat">
+              <% if (!joinChat){%>
+                <span class="sp">로그인이 필요합니다.</span>
+              <%}else{%>
+                <% for(let i = 0; i<joinChat.length; i++){%>
+                  <div class = "imgdiv" onclick="talk('<%=joinChat[i].name %>')">
+                    <img src="<%=joinChat[i].cover_img%>" alt="">
+                    <p><%=joinChat[i].name%></p>
+                  </div>
+                <%}%>
+              <%}%>
+            </div>
+          </div>
+        </div>
+        <div class="column_second">
+          <div>
+            <div class="chatlist_title">주제별 톡방</div>
+
+            <div class="category_talk">
+              <div class="buttonDiv">
+                <button value="girlgroup" id="gG" onclick="select_tag(`girlgroup`)">여성그룹</button>
+                <button value="boygroup" id="bG" onclick="select_tag(`boygroup`)">남성그룹</button>
+                <button value="Wsolo" id="wS" onclick="select_tag(`Wsolo`)">여성솔로</button>
+                <button value="Msolo" id="mS" onclick="select_tag(`Msolo`)">남성솔로</button>
+              </div>
+              
+              <div id = "s" >
+                <% for(let i = 0; i<tag.length; i++){%>
+                  <div class = "imgdiv"  onclick="talk('<%=tag[i].name %>')">
+                    <img class ="tagimage"src="<%=tag[i].cover_img%>" alt="">
+                    <p class="test"><%=tag[i].name%></p>
+                    <span class="Jmember">멤버 수 <%=tag[i].member %></span>
+                  </div>
+                <%}%>
+              </div>
+            </div>
+          </div>
+          
+          <div>
+            <div class="chatlist_title">톡방 추천</div>
+              <div class="recommand_talk">
+                <div class="recommand">
+
+                  <% for(let i = 0; i<best.length; i++){%>
+                    <div class = "imgdiv"  onclick="talk('<%=best[i].name %>')">
+                      <img src="<%=best[i].cover_img%>" alt="">
+                      <p><%=best[i].name%></p>
+                      <span class="Jmember">접속자 수: <%=best[i].member %></span>
+                    </div>
+                  <%}%>
+                </div>
+              </div>
+          </div>
+        </div>
+    </section>
+
+
+    <%- contentFor('player') %>
+   
+    <script id="sc">
+      
+      function select_tag(tagName){    
+        axios({
+          method: 'POST',
+          url: '/chat/list',
+          data:{
+            tag: tagName
+          }
+        }).then((res) => {
+          const chat_tag = res.data.tag;
+          console.log("ass",chat_tag)
+          document.querySelector("#s").innerHTML = ""
+          
+          for(let i =0; i<chat_tag.length;i++){
+            let cg = document.createElement('div')
+            cg.setAttribute("onclick", `talk('${chat_tag[i].name}')`)
+            cg.setAttribute("class","imgdiv")
+            // cg.classList.add = "imgdiv"
+            cg.innerHTML = `<img src="${chat_tag[i].cover_img}" class ="tagimage" >
+                  <p>${chat_tag[i].name} </p><span class ="Jmember"> 접속자 수: ${chat_tag[i].member} </span>`;
+            document.querySelector("#s").appendChild(cg)
+          }
+        });
+       
+
+      }
+
+
+    </script>
+
+
+   
+</body>
+</html>
+

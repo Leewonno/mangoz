@@ -1,184 +1,176 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <script src="/socket.io/socket.io.js"></script>
-        <title>Document</title>
-        <style>
-            #body {
-                width: 100%;
-                height: 70vh;
-                position: relative;
-                background: #8ae4bc;
-            }
-            #chat {
-                position: absolute;
-                bottom: 0px;
-                display: flex;
-                justify-content: space-between;
-                width: 100%;
-            }
-            #chat input {
-                width: 80%;
-            }
-            .my-chat {
-                display: flex;
-                justify-content: end;
-                padding: 2px 0px;
-            }
-            .my-chat p {
-                margin: 0;
-                padding: 10px;
-                background: yellow;
-                border-radius: 10px;
-                margin-right: 10px;
-            }
-            .other-chat {
-                display: flex;
-                justify-content: start;
-                padding: 2px 0px;
-            }
-            .other-chat p {
-                margin: 0;
-                padding: 10px;
-                background: white;
-                border-radius: 10px;
-                margin-left: 10px;
-            }
-            #notice {
-                display: flex;
-                flex-direction: column;
-                text-align: center;
-                color: gray;
-            }
-            #notice p {
-                margin: 0;
-            }
-            .secret-chat p {
-                background: pink;
-            }
-        </style>
-    </head>
-    <body>
-        <div id="main">
-            <form id="room">
-                <input type="text" id="roomName" placeholder="채팅방 만들기" />
-                <input type="text" id="userName" placeholder="사용자 이름 입력" />
-                <button>만들기</button>
-            </form>
-            <ul id="lists"></ul>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/css/chat.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+    <title>채팅방</title>
+    <style></style>
+  </head>
+  <body>
+    <%- contentFor('chat-body') %>
+    <div id="msg">
+      <div class="talk_menu_bar" hidden>
+        <div class="share_button">
+          <button type="button" onclick="close_menu()" class="closeMenu">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+          <button onclick="share_url()" class="share">
+            <span class="material-symbols-outlined"> ios_share </span>
+          </button>
         </div>
-        <div id="body" hidden>
-            <div id="msg">
-                <div id="notice"></div>
-                <!-- <div class="my-chat">
-                    <p>채팅테스트(나)</p>
-                </div>
-                <div class="other-chat">
-                    <p>채팅테스트(상대방)</p>
-                </div> -->
-            </div>
-            <form id="chat">
-                <select id="userList"></select>
-                <input type="text" id="message" placeholder="메세지 입력" />
-                <button>입력</button>
-            </form>
+        <br />
+        <div class="menu_main">
+          <div class="talk_profile"><img src="" alt="" class="profile_img" /></div>
+          <div class="room_name"></div>
+          <button class="talk_out" onclick="leaveChat()">
+            <span class="material-symbols-outlined"> logout </span>
+            <p>나가기</p>
+          </button>
         </div>
+      </div>
+      <div id="notice"></div>
+    </div>
+    <form id="chat">
+      <input type="text" id="message" placeholder="메세지 입력" />
+      <button class="chat_send_message">전송</button>
+    </form>
 
-        <script>
-            const socket = io();
-            const roomForm = document.querySelector('#room');
-            const chatForm = document.querySelector('#chat');
-            const msg = document.querySelector('#msg');
-            const notice = document.querySelector('#notice');
+    <script>
+      function open_menu() {
+        const menu_bar = document.querySelector('.talk_menu_bar');
+        menu_bar.style.right = '0';
+        menu_bar.removeAttribute('hidden');
+      }
 
-            let myName;
+      function close_menu() {
+        const menu_bar = document.querySelector('.talk_menu_bar');
+        menu_bar.style.right = '-100%';
+        menu_bar.setAttribute('hidden', 'true');
+      }
+    </script>
 
-            //룸리스트
-            socket.on('roomList', (roomLists) => {
-                console.log(roomLists);
-                const lists = document.querySelector('#lists');
-                lists.textContent = '';
-                roomLists.forEach((roomList) => {
-                    const li = document.createElement('li');
-                    li.textContent = `${roomList} 와 닉네임 입력 후 입장`;
-                    lists.appendChild(li);
-                });
-            });
+    <script>
+      const socket = io();
+      const roomForm = document.querySelector('#room');
+      const chatForm = document.querySelector('#chat');
+      const msg = document.querySelector('#msg');
+      const share = document.querySelector('#share_button');
+      const talkName = document.querySelector('#talk_name');
+      const roomname = document.querySelector('.room_name');
+      let myName, roomName, member, cover_img, current;
+      // msg.scrollTop = msg.scrollHeight;
+      // const roomName = roomForm.querySelector('#roomName');
 
-            //사용자 리스트
-            socket.on('userList', (userLists) => {
-                console.log(userLists);
-                const lists = document.querySelector('#userList');
-                lists.textContent = '';
-                let options = `<option value="all">전체</option>`;
-                for (let i of userLists) {
-                    options += `<option value="${i.key}">${i.name}</option>`;
-                }
-                lists.innerHTML = options;
-            });
-            //메세지 띄우기
-            socket.on('newMessage', (message, nick, bool) => {
-                console.log(message, nick);
-                const div = document.createElement('div');
-                const p = document.createElement('p');
-                if (myName === nick) {
-                    //내가입력한 텍스트
-                    div.classList.add('my-chat');
-                } else {
-                    div.classList.add('other-chat');
-                }
-                //개인메세지일때 bool이 true
-                if (bool) {
-                    div.classList.add('secret-chat');
-                }
+      const message = document.querySelector('#message');
+      message.addEventListener('input', (e) => {
+        if (message.value.length == 0) {
+          document.querySelector('.chat_send_message').style.backgroundColor = '#e5e5e5';
+        } else {
+          document.querySelector('.chat_send_message').style.backgroundColor = 'yellow';
+        }
+      });
 
-                //채팅 텍스트
-                p.textContent = bool ? `(귓속말) ${nick} : ${message}` : `${nick} : ${message}`;
-                div.appendChild(p);
-                msg.appendChild(div);
-            });
-            //입장 메세지 이벤트
-            socket.on('notice', (message) => {
-                const div = document.createElement('div');
-                const p = document.createElement('p');
-                p.textContent = message;
-                div.appendChild(p);
-                notice.appendChild(div);
-            });
+      axios({
+        method: 'POST',
+        url: '/chat',
+      }).then((res) => {
+        myName = res.data.userid;
+        roomName = res.data.roomName;
+        member = res.data.member;
+        cover_img = res.data.cover_img;
+        console.log('mN', myName);
+        console.log('rM', roomName);
+        console.log('mM', member);
+        console.log('ci', cover_img);
+        document.querySelector('.talk_name').innerHTML = `${roomName}<div class="member">${member}</div>`;
+        // let cg = document.createElement('div');
+        roomname.innerHTML = `<p>${roomName}</p>`;
+        // talkName.appendChild(cg);
+        document.querySelector('.profile_img').src = `${cover_img}`;
+        console.log('ddd', document.querySelector('.profile_img').src);
+      });
+      socket.emit('create');
+      window.scrollTo(0, msg.scrollHeight);
 
-            ///폼 이벤트
-            roomForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const roomName = roomForm.querySelector('#roomName');
-                const userName = roomForm.querySelector('#userName');
-                if (roomName.value === '' || userName.value === '') {
-                    alert('방이름과 닉네임 적어주세요');
-                    return;
-                }
-                socket.emit('create', roomName.value, userName.value, () => {
-                    const main = document.querySelector('#main');
-                    const body = document.querySelector('#body');
-                    main.hidden = true;
-                    body.hidden = false;
-                    //전역변수에 입력한 닉네임을 저장
-                    myName = userName.value;
-                });
-            });
-            chatForm.addEventListener('submit', (e) => {
-                e.preventDefault();
-                const user = document.querySelector('#userList');
-                const message = document.querySelector('#message');
-                console.log(user.value);
-                const msg = {
-                    nick: myName,
-                    user: user.value,
-                    message: message.value,
-                };
-                socket.emit('sendMessage', msg);
-                message.value = '';
-            });
-        </script>
-    </body>
+      //메세지 띄우기
+      socket.on('newMessage', (message, userid) => {
+        console.log(message, userid);
+        const div = document.createElement('div');
+        const p1 = document.createElement('p');
+        const p = document.createElement('p');
+        let p2;
+        console.log('test', userid);
+
+        if (message) {
+          if (myName == userid) {
+            //내가입력한 텍스트
+            div.classList.add('hello');
+            p.textContent = `${message}`;
+          } else {
+            console.log('my', myName);
+            console.log('user', userid);
+            div.classList.add('hellow');
+
+            p1.classList.add('hellowId');
+
+            p1.innerHTML = `${userid}`;
+            p.innerHTML = `${message}`;
+          }
+
+          msg.appendChild(p1);
+          div.appendChild(p);
+          msg.appendChild(div);
+        }
+        current = document.querySelectorAll('p');
+        current[current.length - 1].scrollIntoView(true);
+      });
+
+      //입장 메세지 이벤트
+      socket.on('notice', (message, userid) => {
+        const div = document.createElement('div');
+        const p = document.createElement('p');
+        p.id = 'noticeId';
+        // console.log('my', myName);
+        p.textContent = message;
+        div.appendChild(p);
+        msg.appendChild(div);
+      });
+
+      ///폼 이벤트
+      chatForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = document.querySelector('#message');
+        console.log('cl', myName);
+        const msg = {
+          userid: myName,
+          message: message.value,
+        };
+        socket.emit('sendMessage', msg);
+        message.value = '';
+        current = document.querySelectorAll('p');
+        console.log(current[0]);
+
+        current[current.length - 1].scrollIntoView(true);
+      });
+
+      const leaveChat = () => {
+        socket.emit('deleteInfo');
+        window.close();
+      };
+
+      const share_url = () => {
+        var url = '';
+        var textarea = document.createElement('textarea');
+        document.body.appendChild(textarea);
+        url = window.document.location.href;
+        textarea.value = url;
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+      };
+    </script>
+  </body>
 </html>

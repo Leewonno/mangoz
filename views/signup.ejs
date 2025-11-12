@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    
+    <title>회원가입</title>
+</head>
+<body>
+    <header>
+
+    <%- contentFor('body') %>
+        <section class="signupMain">
+            <div class="signupLogo">회원가입</div><br>
+
+            <section class="signupPage">
+                    <div class="signupCover">
+                        <form name="signupForm" class="signupForm">
+                            <input type="text" id="userid" placeholder="아이디"><br>
+                            <div id="signupHidden" class="signupHidden"><i class="fa-solid fa-check" id="signupCheckImg"></i></div>
+                            <div id="signupMatch" class="signupMatch">ID는 영어 소문자와 숫자로 6글자 이상으로 구성되어야 합니다</div>
+                            <input type="password" id="pw" class="signupPw" placeholder="비밀번호"><br>
+                            <input type="password" id="pw2" class="signupPw2" placeholder="비밀번호확인"><br>
+                            <div id="pwMatch" class="pwMatch"></div>
+                            <input type="text" id="mail" placeholder="이메일"><br>
+                            <input type="text" id="name" placeholder="이름"><br>
+                            <input type="text" id="nick" placeholder="닉네임"><br>
+                            <div class="all_gender">
+                                <div class="man_class">
+                                    
+                                    <input type="radio" id="man" name="gender" value="남자" hidden>
+                                    <label class="gender_class" for="man">남자</label>
+                                </div>
+                                <div class="woman_class">
+                                    
+                                    <input type="radio" id="woman" name="gender" value="여자" hidden>
+                                    <label class="gender_class"for="woman">여자</label>
+                                </div>
+                            </div><br>
+                            <div class="day">
+                                <label for="birth">생년월일</label>
+                                <input type="date" id="birth">
+                            </div><br><br>
+                            
+                            <button  type="button" class="signupBtn" onclick="signup()">회원가입</button>
+                        </form>
+                    </div>
+            </section>
+        </section>
+
+
+    <script id="sc">
+
+        var ids_overlap = false;
+        var pw_confirm = false;
+        var pw_overlap = false;
+
+        
+        async function signup() {
+            const form = document.forms["signupForm"];
+            const id = document.querySelector("#userid");
+            const pw = document.querySelector("#pw");
+            const pw2 = document.querySelector("#pw2");
+            let pwPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+
+            if(!pwPattern.test(pw.value, pw2.value)) {
+                alert("비밀번호를 다시 입력해주세요. \n 비밀번호는 영문, 숫자, 특수기호 조합하여 8자리 이상입니다.");
+            } else {
+                pw_confirm = true;
+                alert("사용가능한 비밀번호입니다.");
+}
+
+            if(!ids_overlap) {
+                alert("중복체크를 해주세요");
+                return;
+            }
+
+            if(!pw_confirm) {
+                alert("유효성 검사를 해주세요");
+                return;
+            }
+
+            if(!pw_overlap) {
+                alert("중복체크를 해주세요");
+                return;
+            }
+            const res = await axios ({
+                method: "post",
+                url: "/signup",
+                data: {
+                    userid: form.userid.value,
+                    pw: form.pw.value,
+                    email: form.mail.value,
+                    name: form.name.value,
+                    gender: form.gender.value,
+                    nickname: form.nick.value,
+                    birth: form.birth.value,
+                    grade: "n",
+                }
+            });
+            
+            if(res.data.result) {
+                alert("회원가입을 축하합니다.");
+                document.location.href = "/";
+            } else {
+                alert(`error message : ${res.data.message}`);
+                document.location.reload();
+            }
+        };
+
+        //아이디 유효성검사 및 중복검사
+        document.querySelector("body").addEventListener("click", async function (e) {
+            if (e.target.id == e.currentTarget.querySelector("#userid").id || e.target == e.currentTarget.querySelector("header")) {
+                console.log("True");
+            }
+            else {
+                const form = document.forms["signupForm"];
+                const id = document.querySelector("#userid");
+                const match = document.querySelector("#signupMatch")
+                const confirm = document.querySelector("#signupHidden");
+                const checkImg = document.querySelector("#signupCheckImg");
+                const idPattern = new RegExp("^[a-z][0-9a-z]{5,15}$");
+                
+                if(!idPattern.test(id.value)) {
+                    match.classList.remove("signupMatch");
+                    match.style.color = "red"
+                    id.focus();
+                    return;
+                } else {
+                    match.classList.add("signupMatch");
+                }
+
+                const res = await axios({
+                    method: "get",
+                    url: "/signup/valid",
+                    params: {
+                        userid:id.value
+                    }
+                })
+
+                if(res.data.result) {
+                    ids_overlap = true;
+                    confirm.classList.remove("signupHidden");
+                    checkImg.className = "fa-solid fa-check";
+                    checkImg.style.color = "blue";
+                    id.style.color = "blue";
+                } else {
+                    confirm.classList.remove("signupHidden"); 
+                    checkImg.className = "fa-solid fa-exclamation";
+                    checkImg.style.color = "red";
+                    id.style.color = "red";
+                }
+
+            }
+        });
+
+        //아이디 유효성 검사
+        document.querySelector("#userid").addEventListener("input", async function (e) {
+            const form = document.forms["signupForm"];
+            const id = document.querySelector("#userid");
+            const match = document.querySelector("#signupMatch");
+            const confirm = document.querySelector("#signupHidden");
+            const checkImg = document.querySelector("#signupCheckImg");
+            const idPattern = new RegExp("^[a-z][0-9a-z]{5,15}$");
+                
+            if(!idPattern.test(id.value)) {
+                match.classList.remove("signupMatch");
+                match.style.color = "red";
+                id.focus();
+                    
+            } else {
+                match.classList.add("signupMatch");
+            }
+
+            confirm.classList.add("signupHidden");
+        });
+
+        //아이디 지울때 색 검정으로
+        document.querySelector("#userid").addEventListener("input", async function (e) {
+            const id = document.querySelector("#userid");
+
+            if(id.value) {
+                id.style.color = "black";
+            }
+        });
+
+        //비밀번호 일치
+        document.querySelector(".signupPw").addEventListener("input", function (e) {
+            const match_pw = document.querySelector("#pw").value;
+            const match_pw2 = document.querySelector("#pw2").value;
+            const match_word = document.querySelector("#pwMatch");
+
+            if(match_pw !== match_pw2 || match_pw === "") {
+                console.log("1", match_pw)
+                console.log("2", match_pw2)
+                match_word.classList.remove("pwMatch");
+                match_word.textContent = "비밀번호를 확인해주세요";
+                match_word.style.color = "red";
+            } else {
+                pw_overlap = true;
+                match_word.classList.remove("pwMatch");
+                match_word.textContent = "비밀번호가 일치합니다";
+                match_word.style.color = "blue";
+            }
+        });
+
+        //비밀번호 일치
+        document.querySelector(".signupPw2").addEventListener("input", function (e) {
+            const match_pw = document.querySelector("#pw").value;
+            const match_pw2 = document.querySelector("#pw2").value;
+            const match_word = document.querySelector("#pwMatch");
+
+            if(match_pw !== match_pw2 || match_pw2 === "") {
+                match_word.classList.remove("pwMatch");
+                match_word.textContent = "비밀번호를 확인해주세요"
+                match_word.style.color = "red";
+            } else {
+                pw_overlap = true;
+                match_word.classList.remove("pwMatch");
+                match_word.textContent = "비밀번호가 일치합니다";
+                match_word.style.color = "blue";
+            }
+        });
+
+        //비밀번호 입력 값 none일 시 문구 안뜨게하기
+        document.querySelector(".signupPw").addEventListener("input", function (e) {
+            const match_pw = document.querySelector("#pw").value;
+            const match_pw2 = document.querySelector("#pw2").value;
+            const match_word = document.querySelector("#pwMatch");
+
+            if(match_pw === "" && match_pw2 === "") {
+                match_word.classList.add("pwMatch");
+            }
+        });
+        
+        //비밀번호 입력 값 none일 시 문구 안뜨게하기
+        document.querySelector(".signupPw2").addEventListener("input", function (e) {
+            const match_pw = document.querySelector("#pw").value;
+            const match_pw2 = document.querySelector("#pw2").value;
+            const match_word = document.querySelector("#pwMatch");
+
+            if(match_pw === "" && match_pw2 === "") {
+                match_word.classList.add("pwMatch");
+            }
+        });
+
+    </script>
+    
+</body>
+</html>

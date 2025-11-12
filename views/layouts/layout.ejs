@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>망고즈</title>
+
+    <link rel="stylesheet" href="/css/header.css" />
+    <link rel="stylesheet" href="/css/footer.css" />
+    <link rel="stylesheet" href="/css/playbar.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" />
+    <!-- 모든 CSS 레이아웃에서 불러오기 -->
+    <link rel="stylesheet" href="/css/song.css" />
+    <link rel="stylesheet" href="/css/sort.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/chatlist.css" />
+    <link rel="stylesheet" href="/css/song_upload.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <link rel="stylesheet" href="/css/playlist.css" />
+    <link rel="stylesheet" href="/css/signup.css" />
+    <link rel="stylesheet" href="/css/mypage.css" />
+    <link rel="stylesheet" href="/css/signin.css" />
+    <link rel="stylesheet" href="/css/chat_upload.css" />
+    <%- style %>
+
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <header>
+      <div class="header_box">
+        <div class="left">
+          <div class="logo"><a href="/">MangoZ</a></div>
+        </div>
+        <div class="right">
+          <div class="go">
+            <a href="/sort?sort=date">최신음악</a>
+            <a href="/sort?sort=like">인기음악</a>
+            <a href="/chat/list">A-TALK</a>
+          </div>
+          <div class="search">
+            <i class="fa-solid fa-magnifying-glass" style="color: #000000; margin-right: -30px"></i>
+            <input type="text" class="search_bar" />
+          </div>
+          <div class="user">
+            <a id="signin" href="/signin">LOGIN</a>
+          </div>
+        </div>
+      </div>
+    </header>
+    <main><%- defineContent('body') %></main>
+
+    <footer>
+      <div class="footer_box">
+        <div class="notice_box">
+          <div class="notice"><a href="/notice">공지사항</a></div>
+          <div class="notice"><a href="/notice">개인정보보호정책</a></div>
+          <div class="notice"><a href="/notice">고객센터</a></div>
+          <div class="notice"><a href="/notice">제휴문의</a></div>
+        </div>
+        <div class="left">
+          <div class="team">포스코 코딩온 웹 풀스택 과정 프로젝트2 6조</div>
+          <div class="team_member">박가현, 서채영, 이우종, 이원노, 황동하</div>
+        </div>
+        <!-- <div class="right">
+          <div></div>
+        </div> -->
+      </div>
+    </footer>
+
+    <section>
+      <div class="playbar_wrapper">
+        <div class="musicbar_wrapper">
+          <input type="range" class="music_bar" step="1" value="0" , min="0" />
+          <div class="musicbar_background"></div>
+        </div>
+        <div class="playbar">
+          <div class="player_song">
+            <div class="song_img">
+              <img
+                class="m_song_cover"
+                src="https://kdt-wonno2.s3.ap-northeast-2.amazonaws.com/img/%ED%94%8C%EB%A0%88%EC%9D%B4%EB%B0%94_%EA%B8%B0%EB%B3%B8.png"
+                alt="앨범사진"
+              />
+            </div>
+            <div class="song_info">
+              <a class="song_title" style="display: block;">재생목록이 비어있습니다.</a>
+              <a class="artist_name" href="#"></a>
+            </div>
+          </div>
+          <div class="player_controller">
+            <button type="button" class="button" id="pre" onclick="prevPlay()">
+              <i class="fa-solid fa-backward-step" style="color: #ffffff"></i>
+            </button>
+            <label for="play"
+              ><i class="fa-regular fa-circle-play fa-lg" style="color: #ffffff" id="play_icon"></i
+            ></label>
+            <input type="checkbox" id="play" hidden />
+
+            <button type="button" class="button" id="next" onclick="nextPlay()">
+              <i class="fa-solid fa-forward-step" style="color: #ffffff"></i>
+            </button>
+
+            <div class="player_side">
+              <div class="player_time">
+                <span class="player_time_current">00:00</span>
+                <span class="player_time_duration">/</span>
+                <span class="player_time_total"></span>
+              </div>
+            </div>
+          </div>
+
+          <div class="player_side_rigth">
+            <div class="volume">
+              <label for="mute_button"
+                ><i class="fa-solid fa-volume-low" style="color: #ffffff" id="volume_button"></i
+              ></label>
+              <input type="checkbox" id="mute_button" hidden />
+              <div class="range_container">
+                <span class="range_bar"><span class="range_bars"></span></span>
+                <input type="range" min="0" max="100" id="volume_status" />
+              </div>
+              <button type="button" onclick="openModal()" class="open_playlist">
+                <i class="fa-solid fa-bars" style="color: #ffffff"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- playlist창 -->
+    <div class="modal_open" hidden>
+      <div class="modal">
+        <button class="button_close" onclick="closeModal()">
+          <i class="fa-solid fa-x" style="color: #ffffff"></i>
+        </button>
+        <div class="modal_left">
+          <div class="content_box">
+            <a href="#" class="song_title">
+              <a class="song_name">재생중인 노래가 없습니다</a>
+            </a>
+            <a href="#" class="song_artist">
+              <span class="song_singer"></span>
+            </a>
+            <!-- <label for="play" class="modal_song_play"
+              ><i id="modal_play_icon" class="fa-solid fa-play" style="color: white"></i
+            ></label> -->
+            <img
+              class="song_cover"
+              src="https://kdt-wonno2.s3.ap-northeast-2.amazonaws.com/img/%ED%94%8C%EB%A0%88%EC%9D%B4%EB%B0%94_%EA%B8%B0%EB%B3%B8.png"
+              alt="앨범사진"
+            />
+            <!-- 좋아요 기능 -->
+            <div class="playbar_like">
+              <i class="fa-regular fa-heart" style="color: #ff6666"></i>
+            </div>
+            <!-- <input type="hidden" id="songLike"> -->
+          </div>
+        </div>
+        <div class="modal_right">
+          <div class="playlistname">MY playlist</div>
+          <div class="wrap">
+            <div class="modal_search">
+              <i class="fa-solid fa-magnifying-glass" style="color: #dfdada; margin-right: -30px"></i>
+              <input type="text" class="modal_search_bar" placeholder="재생목록에서 검색해주세요" />
+            </div>
+            <div class="edit">
+              <button class="song_edit">
+                <i class="fa-solid fa-bars" style="color: #ffffff"></i>
+              </button>
+            </div>
+          </div>
+          <div class="modal_palylist_songs">
+            <ul class="modal_playlist_song">
+              <li id="1" class="modal_playlist_detail">
+                <a class="modal_playlist_detail_imgs" href="#">
+                  <img
+                    class="modal_playlist_detail_img"
+                    src="https://kdt-wonno2.s3.ap-northeast-2.amazonaws.com/img/%ED%94%8C%EB%A0%88%EC%9D%B4%EB%B0%94_%EA%B8%B0%EB%B3%B8.png"
+                    alt="앨범커버사진"
+                  />
+                </a>
+                <div class="modal_playlist_detail_titles" href="#">
+                  <a class="modal_playlist_detail_title">곡을 추가해주세요.</a>
+                  <a class="modal_playlist_detail_artist"></a>
+                </div>
+                <div class="container" onclick="songDelete('1')">
+                  <a href="#" class="menu-name"><i class="fa-regular fa-trash-can" style="color: #ffffff"></i></a>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- playlist창 끝 -->
+
+    <!-- 플레이리스틀 추가 모달창 -->
+    <div id="myPlaylist" class="hidden">
+      <div class="myPlaylistCover">
+        <div class="wrapperPlaylist">
+          <div class="playlistTitle">플레이리스트</div>
+          <button type="button" class="playlistButton"><i class="fa-regular fa-circle-xmark"></i></button>
+        </div>
+        <br />
+        <div class="wrapperMyPlaylist"></div>
+      </div>
+    </div>
+
+    <audio id="player">
+      <source src="" type="audio/mpeg" />
+    </audio>
+
+    <%- script %>
+    <script src="/js/pageload.js"></script>
+    <script src="/js/playbar.js"></script>
+    <script src="/js/logout.js"></script>
+    <script src="/js/playlistAdd.js"></script>
+    <script src="/js/like.js"></script>
+    <script src="/js/chat.js"></script>
+    <script src="/js/index.js"></script>
+  </body>
+</html>

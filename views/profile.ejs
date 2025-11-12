@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>마이페이지(개인정보 수정)</title>
+</head>
+<body>
+    <%- contentFor('body') %>
+    <section class="mypageMain">
+        <div class="mypage">
+            <div class="mypageCover">
+                <section class="profilePage">
+                    <div class="avatar">
+                        <img class="profileImg" src="<%= data.profile_img %>">
+                        <label for="profileimg">변경</label>
+                        <form>
+                            <input type="file" id="profileimg" hidden>
+                            <button type="button" class="upload_btn" onclick="imgupload()">upload</button>
+                        </form>
+                    </div>
+                    <div class="welcome">
+                        <p class="welcomePara"><%= data.nickname %>님 환영합니다 !</p>
+                        <p class="welcomeId"><%= data.userid %></p>
+                    </div>
+                </section>
+                <br>
+                <form class="mypageForm">
+                    <input type="text" id="name" placeholder="이름" value="<%= data.name %>"><br>
+                    <input type="text" id="nickname" placeholder="닉네임" value="<%= data.nickname %>"><br>
+                    <input type="password" id="pw" placeholder="비밀번호"></i><br>
+                    <div class="passwordConfirm">
+                        <input type="password" id="pw2" placeholder="비밀번호확인">
+                        <div id="profileHidden" class="profileHidden"></div>
+                    </div>
+                    <div class="profileMatchWrraper">
+                        <div id="profileMatch" class="profileMatch"></div>
+                    </div><br>
+                    <button type="button" class="mainBtn" onclick="edit()">회원정보변경</button>
+                </form><br><br>
+                <section class="mypageBtns">
+                    <button class="deleteBtn" onclick="destroy()">회원탈퇴</button>
+                    <button class="cancelBtn" onclick="move()">취소</button>
+                </section>
+            </div>
+        </div>
+
+        
+    </section>
+
+    <script id="sc">
+
+        async function edit() {
+            const form = document.forms['mypageForm'];
+            const pw = document.querySelector("#pw");
+            const pw2 = document.querySelector("#pw2");
+            const path = document.querySelector('.profileImg');
+            const name = document.querySelector("#name");
+            const nick = document.querySelector("#nickname");
+
+            if(pw.value.length === 0 ) {
+                
+                const res1 = await axios({
+                    method: 'PATCH',
+                    url: '/profile',
+                    data: {
+                        name: name.value,
+                        nickname: nick.value,
+                        profile_img: path.src,
+                        //token: localStorage.getItem('token')
+                    }
+                });
+
+                if(res1.data.result) {
+                    alert("회원정보 수정이 완료되었습니다.");
+                    document.location.href = "/";
+                    return;
+                }else{
+                    alert("에러 발생");
+                    return;
+                }
+            }
+
+            let pwPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+            if(!pwPattern.test(pw.value, pw2.value)) {
+                alert("비밀번호를 다시 입력해주세요. \n 비밀번호는 영문, 숫자, 특수기호 조합하여 8자리 이상입니다.");
+                return;
+            }
+            if(pw.value !== pw2.value || pw.value === "" || pw2.value === "" ) {
+                alert("비밀번호를 확인해주세요");
+                pw.focus();
+                return;
+            } else {
+                alert("비밀번호가 일치합니다.");
+            };
+            
+            console.log(path.src);
+            const res = await axios({
+                method: 'PATCH',
+                url: '/profile/pw',
+                data: {
+                    name: name.value,
+                    nickname: nick.value,
+                    profile_img: path.src,
+                    pw: pw.value,
+                    //token:localStorage.getItem('token')
+                }
+            });
+            console.log(res.data.result);
+            if(res.data.result) {
+                alert("회원정보 수정이 완료되었습니다.");
+                document.location.href = "/";
+            } else {
+                alert(`error message : ${res.data.message}`);
+                document.location.reload();
+            };
+        };
+
+        //회원탈퇴
+        function destroy() {
+            if (!confirm('회원탈퇴 하시겠습니까?')) {
+                return;
+            }
+            axios({
+                method: 'DELETE',
+                url: '/profile',
+                data: {
+                    //token:localStorage.getItem('token')
+                },
+            }).then((res) => {
+                if (res.data.result) {
+                    alert('회원탈퇴 완료되었습니다');
+                    document.cookie = 'token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;'; 
+                    document.location.href = '/';
+                }
+            });
+        }
+        //취소
+        function move() {
+            document.location.href = "/";
+        }
+
+        // //프로필사진 변경
+        
+        async function imgupload() {
+            const img = document.querySelector('.profileImg');
+            const file = document.querySelector('#profileimg');
+            const formData = new FormData();
+            formData.append('imgfile', file.files[0]);
+
+            const res = await axios({
+                method: 'POST',
+                url: '/dynamic/img',
+                data: formData,
+                headers: {
+                    'Content-Type' : 'multipart/form-data',
+                },
+            });
+            console.log(res.data.location)
+            img.src = res.data.location;
+        }
+
+        // 비밀번호 일치검사
+        document.querySelector("#pw").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_word = document.querySelector("#profileHidden");
+
+            if(profile_pw !== profile_pw2 || profile_pw.value === "" || profile_pw2.value === "") {
+                profile_word.classList.remove("profileHidden");
+                profile_word.className = "fa-solid fa-exclamation";
+                profile_word.style.color = "red";
+            } else {
+                profile_word.classList.remove("profileHidden");
+                profile_word.className = "fa-solid fa-check";
+                profile_word.style.color = "blue";
+            }
+        });
+
+        // 비밀번호 일치검사
+        document.querySelector("#pw2").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_word = document.querySelector("#profileHidden");
+
+            if(profile_pw !== profile_pw2 || profile_pw.value === "" || profile_pw2.value === "") {
+                profile_word.classList.remove("profileHidden");
+                profile_word.className = "fa-solid fa-exclamation";
+                profile_word.style.color = "red";
+            } else {
+                profile_word.classList.remove("profileHidden");
+                profile_word.className = "fa-solid fa-check";
+                profile_word.style.color = "blue";
+            }
+        });
+
+        //비밀번호 유효성검사
+        document.querySelector("#pw").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_match = document.querySelector("#profileMatch");
+            let pwPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+            
+            if(!pwPattern.test(pw.value)) {
+                profile_match.classList.remove("profileMatch");
+                profile_match.textContent = "비밀번호는 영문, 숫자, 특수기호 조합하여 8자리 이상입니다.";
+                profile_match.style.color = "red";
+                return;
+            } else {
+                profile_match.classList.add("profileMatch");
+            }
+        });
+        
+        //비밀번호 유효성검사
+        document.querySelector("#pw2").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_match = document.querySelector("#profileMatch");
+            let pwPattern = /^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/;
+
+            if(!pwPattern.test(pw2.value)) {
+                profile_match.classList.remove("profileMatch");
+                profile_match.textContent = "비밀번호는 영문, 숫자, 특수기호 조합하여 8자리 이상입니다.";
+                profile_match.style.color = "red";
+                return;
+            } else {
+                profile_match.classList.add("profileMatch");
+            }
+        });
+
+        //비밀번호 값 none일시 문구 안뜨게
+        document.querySelector("#pw").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_match = document.querySelector("#profileMatch");
+           
+            if(profile_pw === "") {
+                profile_match.classList.add("profileMatch");
+            }
+        });
+
+        //비밀번호 값 none일시 문구 안뜨게
+        document.querySelector("#pw2").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_match = document.querySelector("#profileMatch");
+           
+            if(profile_pw2 === "") {
+                profile_match.classList.add("profileMatch");
+            }
+        });
+
+
+        document.querySelector("#pw").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_word = document.querySelector("#profileHidden");
+
+            if(profile_pw === "") {
+                profile_word.classList.add("profileHidden");
+            }
+        });
+
+        document.querySelector("#pw2").addEventListener("input", function(e) {
+            const profile_pw = document.querySelector("#pw").value;
+            const profile_pw2 = document.querySelector("#pw2").value;
+            const profile_word = document.querySelector("#profileHidden");
+
+            if(profile_pw2 === "") {
+                profile_word.classList.add("profileHidden");
+            }
+        });
+    </script>
+    
+</body>
+</html>
