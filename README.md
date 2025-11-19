@@ -1,7 +1,7 @@
+# 음악 스트리밍 사이트, MangoZ
 ![image](https://github.com/user-attachments/assets/f7af3727-e437-44cd-83ca-ab5a8c432b5c)
 
-
-# 음악 스트리밍 사이트, MangoZ
+<br />
 
 ## 📋 프로젝트 개요
 
@@ -9,13 +9,13 @@
 
 <br />
 
-## 🔋 개발 기간
+## ⏱️ 개발 기간
 
 2023.09.01 ~ 2023.09.15
 
 <br />
 
-## 👥 팀원
+## 👥 Members (팀원)
 
 |                                    이원노(Leader)                                   |                                    박가현                                    |                                     서채영                                     |                                    이우종                                    |                                    황동하                                     |
 | :------------------------------------------------------------------------: | :------------------------------------------------------------------------: | :------------------------------------------------------------------------: | :------------------------------------------------------------------------: | :-------------------------------------------------------------------------: |
@@ -26,29 +26,32 @@
 
 ## ⚡️ 주요 기능
 
-- 음악 스트리밍 : 재생바를 통한 음악 재생 및 컨트롤
-- 플레이리스트 : 개인 플레이리스트 생성 및 관리, 드로그 앤 드랍을 통한 순서 변경
-- 검색 : 제목, 아티스트, 앨범, 가사 검색
-- 좋아요 : 음악, 플레이리스트 좋아요 기능
-- 아티스트톡(ATalk) : Socket.io 기반 실시간 채팅
-- 사용자 인증 : JWT 기반 인증
-- 파일 업로드 : AWS S3 버킷에 파일 업로드 (이미지, 음악 등)
+- 음악 스트리밍 기능을 제공합니다.
+- 플레이리스트를 생성하고 공유할 수 있으며, 드래그 앤 드롭으로 곡 순서를 변경할 수 있습니다.</ListItem>
+- 제목, 아티스트, 앨범, 가사 검색 기능을 제공합니다.
+- Socket.io를 활용하여 실시간 아티스트톡(A-Talk) 기능을 구현했습니다.
+- JQuery를 사용해 SPA 구조화를 진행했습니다.
+- AWS S3를 이용한 이미지 업로드 기능을 제공합니다.
+- JWT 기반 인증을 통해 사용자 인증을 지원합니다.
 
 <br />
 
 ## ⚙️ 사용 기술
 
-- **Node.js** : 런타임 환경
-- **Express** : 웹 프레임워크
-- **Socket.io** : 실시간 통신
-- **JWT** : 인증/인가
+<div style="display: flex; gap: 5px;">
+  <img src="https://img.shields.io/badge/Node.js-339933?style=flat&logo=nodedotjs&logoColor=white" />
+  <img src="https://img.shields.io/badge/JQuery-0769AD?style=flat&logo=jquery&logoColor=white" />
+  <img src="https://img.shields.io/badge/Mysql-4479A1?style=flat&logo=mysql&logoColor=white" />
+  <img src="https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazonaws&logoColor=white" />
+  <img src="https://img.shields.io/badge/Javascript-F7DF1E?style=flat&logo=javascript&logoColor=white" />
+</div>
 
-### 인프라 및 서비스
-- **AWS EC2** : 백엔드 서버(Node.js) 호스팅
-- **AWS RDS** : 데이터베이스 운영
-- **AWS S3** - 파일 저장소 (이미지, 음악 파일 업로드)
-- **MySQL** - 관계형 데이터베이스
+<br />
 
+- Node.js : JavaScript 단일 언어로 웹 사이트를 개발하기 위해 사용하였습니다.
+- JQuery : 간결한 문법과 풍부한 DOM 조작 기능을 활용하기 위해 사용하였습니다.
+- MySQL : 무료로 사용할 수 있는 오픈소스이며, 다양한 운영체제에서 사용 가능하여 사용하였습니다.
+- AWS : EC2(Node.js 호스팅), RDS(MySQL 운영), S3(이미지 파일 업로드)를 위해 이용했습니다.
 
 <!-- <div style="display:flex">
   <img src="https://img.shields.io/badge/AWS-232F3E?style=flat&logo=amazonaws&logoColor=white" />
