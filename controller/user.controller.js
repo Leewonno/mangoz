@@ -23,7 +23,6 @@ exports.getSignupPage = (req, res) => {
 
 exports.getProfilePage = (req, res) => {
 
-   console.log(req.userid);
     if(!req.userid) {
       res.render('signin');
     } else { 
@@ -31,8 +30,6 @@ exports.getProfilePage = (req, res) => {
       models.Profile.findOne({
         where: { userid: req.userid },
       }).then((result) => {
-        console.log(result.dataValues);
-  
         res.render('profile', { data: result.dataValues})
       });
     }
@@ -97,7 +94,6 @@ exports.postSignIn = async (req, res) => {
 };
 
 exports.updateProfile = (req, res) => {
-  console.log(req.userid);
   if(!req.userid) {
     res.render('signin');
   } else {
@@ -125,7 +121,6 @@ exports.updateProfile = (req, res) => {
 exports.updateProfile_pw = async (req, res) => {
 
   try {
-    console.log(req.userid);
     if(!req.userid) {
       res.render('signin');
     } else {
@@ -158,7 +153,6 @@ exports.updateProfile_pw = async (req, res) => {
 
 exports.deleteProfile = async (req, res) => {
   try {
-    console.log(req.userid);
     if(!req.userid) {
       res.render('signin');
     } else {

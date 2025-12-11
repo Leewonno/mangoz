@@ -1,6 +1,4 @@
 const jwtCookie = document.cookie.split('; ').find(cookie => cookie.startsWith('token='));
-console.log(jwtCookie)
-// let jwtToken = null;
 
 if (jwtCookie) {
   jwtToken = jwtCookie.split('=')[1];

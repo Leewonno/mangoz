@@ -164,15 +164,12 @@
                 id: id,
             });
             
-            console.log(response)
             if (response.data.liked) {
-                console.log(response.data.liked)
                 // 좋아요가 토글되었을 때 아이콘을 채워진 하트로 변경
                 like_element.innerHTML = `
                 <i class="fa-solid fa-heart" style="color: #FCD06B;"></i> 
                 <div class="like_cnt">${response.data.count}</div>`;
             } else {
-                console.log(response.data.liked)
               // 좋아요가 취소되었을 때 아이콘을 빈 하트로 변경
               like_element.innerHTML = `
                 <i class="fa-regular fa-heart" style="color: #FCD06B;"></i> 
@@ -186,21 +183,17 @@
         function startGenreToggle() {
             var genreMenu = document.getElementById("genre_menu_btn");
            
-            console.log("Before toggle: " + genreMenu.style.display);
             if (genreMenu.style.display === "none" || genreMenu.style.display === "") {
                 genreMenu.style.display = "block";
             } else {
                 genreMenu.style.display = "none";
             }
-            console.log("After toggle: " + genreMenu.style.display);        
         }
 
         async function getByMenuGenre(genre) {
             try {
               const encodedGenre = encodeURIComponent(genre);
 
-              console.log("Fetching data for genre: " + encodedGenre);
-              console.log(encodedGenre);
                 const res = await axios({
                     method: "get",
                     url: `/byGenre?genre=${encodedGenre}`,

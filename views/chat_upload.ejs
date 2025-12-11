@@ -27,7 +27,6 @@
       async function upload_img(event) {
         try {
           const file = document.querySelector('.profile_upload');
-          console.log('file', file.files[0]);
 
           const formData = new FormData();
           formData.append('imgfile', file.files[0]);
@@ -40,7 +39,6 @@
               'Content-Type': 'multipart/form-data',
             },
           });
-          console.log('res', res);
           img_url = res.data.location;
         } catch (error) {
           console.log(error);
@@ -60,7 +58,6 @@
               cover_img: img_url,
             },
           });
-          console.log('res', res.data.data);
           if (res.data.result) {
             document.location.href = '/';
           } else {

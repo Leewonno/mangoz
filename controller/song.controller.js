@@ -14,8 +14,6 @@ exports.controller = {
       const genres = await Song.findAll({ attributes: ['genre'], raw: true });
       
       const uniqueGenres = [...new Set(genres.map(song => song.genre))];
-      console.log(uniqueGenres)
-      
       res.render('sort', {genre: uniqueGenres});
     } catch (error) {
       console.error(error);
@@ -26,15 +24,12 @@ exports.controller = {
   },
 
   getPlaylist: async (req, res)=>{
-    console.log(req, res);
     let playlists = [];
     try{
       if(req.userid) {
         playlists = await models.Playlist.findAll({
           where: {userid: req.userid},
         });
-        // console.log('playlists', playlists);
-        
       } 
       res.send({playlists});
     }catch(err){
@@ -44,12 +39,10 @@ exports.controller = {
   },
 
   uploadImg: (req, res) => {
-    console.log(req.file);
     res.send(req.file);
   },
 
   uploadSong: (req, res) => {
-    console.log(req.file);
     res.send(req.file);
   }, 
 
@@ -164,9 +157,6 @@ exports.controller = {
       const totalPages = Math.ceil(totalRows / pageSize); 
       const rowLength = songs.rows.length;
       const hasMore = page < totalPages; 
-  
-      console.log(rowLength, hasMore)
-  
       res.status(200).send({ hasMore: hasMore, songs: songs.rows,});
     } catch (error) {
       console.log(error)
@@ -184,8 +174,6 @@ exports.controller = {
       const limit = pageSize;
       const offset = (page - 1) * pageSize;
 
-      console.log(sort)
-
       const songs = await Song.findAndCountAll({
         attributes: ['id', 'title', 'artist', 'cover_url', 'song_url', 'playtime'],
         where: whereClause,
@@ -193,22 +181,11 @@ exports.controller = {
         offset,
         order: [['release_date', 'DESC']]
       })
-        
-      // const resultSong = songs.rows.map((song) => ({
-      //   id: song.id,
-      //   title: song.title,
-      //   artist: song.artist,
-      //   cover_url: song.cover_url,
-      //   song_url: song.song_url,
-      //   playtime: song.playtime
-      // }));
   
       const totalRows = songs.count;
       const totalPages = Math.ceil(totalRows / pageSize); 
       const rowLength = songs.rows.length;
       const hasMore = page < totalPages; 
-  
-      console.log(rowLength, hasMore)
   
       res.status(200).send({ hasMore: hasMore, songs: songs.rows,});
   
@@ -227,12 +204,9 @@ exports.controller = {
           where: { userid: req.userid },})  
       
       const { id } = req.body;
-      console.log(id, req.userid);
   
       const existLike = await S_like.findOne({ where: { song_id: id, userid: req.userid } });
-      console.log('existLike', existLike);
       const song = await Song.findOne({ where: { id }});
-      console.log('song', song)
   
       if(existLike) {
         await S_like.destroy({ where: { song_id: id, userid: req.userid } });
@@ -257,7 +231,6 @@ exports.controller = {
     try {
       const song_id = req.query.song_id;
       const { content } = req.body;
-      console.log(req.userid)
 
       if(req.userid) {
         const comment = await Comment.create({ song_id, content, userid: req.userid });

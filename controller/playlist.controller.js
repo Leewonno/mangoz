@@ -20,8 +20,6 @@ exports.getPlaylist = async (req, res)=>{
 exports.getPlayListPage = async (req, res) => {
   try {
     const userId = req.userid;
-  //  console.log(userId);
-
     const myPlaylistInfo = [];
     const likeListInfo = [];
     let result = false;
@@ -63,8 +61,6 @@ exports.getPlayListPage = async (req, res) => {
       myPlaylist: myPlaylistInfo,
       likedPlaylist: likeListInfo,
     }
-    console.log(data.myPlaylist)
-    console.log(data.likedPlaylist)
     res.render('playlist', {data});
     
   } catch (error) {
@@ -86,12 +82,7 @@ exports.postPlayListLike = async (req, res) => {
       where: { p_id: id, userid: userId },
     });
 
-    console.log(pLike, created);
-
     const playlist = await models.Playlist.findOne({ where: { id } });
-    console.log("playlist",playlist);
-
-    console.log("pl", playlist);
 
     if (!created) {
       await pLike.destroy();
@@ -134,8 +125,6 @@ exports.postPlayListSong = async (req,res) => {
       attributes: ['song_ids'],
     });
 
-    console.log(row.song_ids);
-
     let addSongId
     if (row.song_ids === null) {
       addSongId = songIds;
@@ -143,14 +132,10 @@ exports.postPlayListSong = async (req,res) => {
       addSongId = row.song_ids + "," + songIds ;
     };
 
-    console.log(addSongId);
-
     const [songs, added] = await models.Playlist.update(
       { song_ids: addSongId },
       { where: { id: playlistId } }
     );
-
-    console.log(songs, added);
 
     res.json({result:true, message: 'Add songs at Playlist successfully'});
 

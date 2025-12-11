@@ -12,7 +12,6 @@ exports.controller = {
 
       const genres = await Song.findAll({ attributes: ['genre'], raw: true });
       const uniqueGenres = [...new Set(genres.map((song) => song.genre))];
-      console.log(uniqueGenres);
 
       const recentSongs = await getSongData(whereClause, attributes, limit, [['release_date', 'DESC']]);
       const likedSongs = await getSongData(whereClause, attributes, limit, [['like', 'DESC']]);
@@ -37,7 +36,6 @@ exports.controller = {
         if (playlist.song_ids) {
           // 1. 먼저 song_ids 문자열을 새로운 배열로 만들기
           let numbers = playlist.dataValues.song_ids.split(/,\s*/);
-          console.log('::::::::::::::::::::::',numbers)
 
           // 2. 배열의 길이 체크해서 0~3이면 numbers[0] 인덱스 주소만 가져오게, 4이상이면 3번째 인덱스까지만 나올 수 있게
           if (numbers.length >= 4) {
@@ -59,14 +57,12 @@ exports.controller = {
         // 유저 플리 좋아요 체크
         if (req.userid) {
           const likeData = await P_like.findOne({ where: { p_id: playlist.id, userid: req.userid } });
-          console.log(':::::::::::::::::::::', likeData);
           if (likeData) {
             likeResult = true;
           } else {
             likeResult = false;
           }
         }
-        console.log(likeResult);
 
         const playItem = {
           id: playlist.id,
@@ -78,7 +74,6 @@ exports.controller = {
         };
         playlistData.push(playItem);
       }
-      console.log(playlistData);
 
       // 데이터를  객체에 추가
       const data = {
@@ -90,11 +85,9 @@ exports.controller = {
         genreMenu: uniqueGenres,
       };
 
-      console.log(data.chatRoom);
       res.render('index', { data });
     } catch (error) {
       // 오류 처리
-      console.log(error);
       res.status(500).send({ message: 'Internal Server Error' });
     }
   },
@@ -104,7 +97,6 @@ exports.controller = {
       let id = req.userid;
       let joinChatarray = [];
       let room_bestArray = [];
-      console.log(id);
       const bestRoom = await ChatRoom.findAll({ order: [['member', 'DESC']], limit: 5 });
       for (let i = 0; i < bestRoom.length; i++) {
         room_bestArray.push({ name: bestRoom[i].name, cover_img: bestRoom[i].cover_img, member: bestRoom[i].member });
@@ -120,7 +112,6 @@ exports.controller = {
       for (let i = 0; i < chat_tag.length; i++) {
         chat_tagArray.push({ name: chat_tag[i].name, cover_img: chat_tag[i].cover_img, member: chat_tag[i].member });
       }
-      console.log('ch', chat_tagArray);
       if (!id) {
         res.render('chatlist', { joinChat: null, best: room_bestArray, tag: chat_tagArray });
       } else {
@@ -136,13 +127,10 @@ exports.controller = {
     } catch (error) {
       console.log(error);
     }
-
-    //   console.log(allChatRoom.dataValues.name);
   },
   getSearchPage: async (req, res) => {
     try {
       const q = req.query.q;
-      console.log(q);
       const limit = 6;
       const playlistData = [];
       let likeResult = false;
@@ -193,14 +181,12 @@ exports.controller = {
         // 유저 플리 좋아요 체크
         if (req.userid) {
           const likeData = await P_like.findOne({ where: { p_id: playlist.id, userid: req.userid } });
-          console.log(':::::::::::::::::::::', likeData);
           if (likeData) {
             likeResult = true;
           } else {
             likeResult = false;
           }
         }
-        console.log(likeResult);
 
         const playItem = {
           id: playlist.id,
@@ -213,7 +199,6 @@ exports.controller = {
         };
         playlistData.push(playItem);
       }
-      console.log(playlistData);
 
       const artistResults = await Song.findAll({
         attributes: ['title', 'id', 'artist', 'cover_url', 'song_url'],
@@ -249,8 +234,6 @@ exports.controller = {
         lyrics: lyricsResults.map((result) => result.dataValues),
         q: q,
       };
-      console.log(data);
-
       res.render('search', { data });
     } catch (error) {
       console.log(error);
@@ -266,24 +249,19 @@ exports.controller = {
       });
 
       const { id } = req.body;
-      console.log(id, req.userid);
 
       const existLike = await P_like.findOne({ where: { p_id: id, userid: req.userid } });
-      console.log('existLike', existLike);
       const playlist = await Playlist.findOne({ where: { id } });
-      console.log('playlist', playlist);
 
       if (existLike) {
         await P_like.destroy({ where: { p_id: id, userid: req.userid } });
         playlist.like -= 1;
         await playlist.save();
-        console.log(playlist.like);
         res.send({ count: playlist.like, liked: false, message: 'like cancel success' });
       } else {
         await P_like.create({ p_id: id, userid: req.userid });
         playlist.like += 1;
         await playlist.save();
-        console.log(playlist.like);
         res.send({ count: playlist.like, liked: true, message: 'like success' });
       }
     } catch (error) {

@@ -2,7 +2,6 @@ getPlaylist()
 
 
 async function playlistAdd(id, song_ids){
-    console.log("id",id);
     const res = await axios({
         method:"post",
         url:"/playlist/song",
@@ -26,8 +25,6 @@ var addSong;
 
 function modelOpenBtn(id) {
     addSong = id;
-    console.log(id);
-    console.log(addSong)
     const modalOpen = document.querySelector("#myPlaylist");
     modalOpen.classList.remove("hidden")
 }
