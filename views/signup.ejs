@@ -112,7 +112,6 @@
         //아이디 유효성검사 및 중복검사
         document.querySelector("body").addEventListener("click", async function (e) {
             if (e.target.id == e.currentTarget.querySelector("#userid").id || e.target == e.currentTarget.querySelector("header")) {
-                console.log("True");
             }
             else {
                 const form = document.forms["signupForm"];
@@ -192,8 +191,6 @@
             const match_word = document.querySelector("#pwMatch");
 
             if(match_pw !== match_pw2 || match_pw === "") {
-                console.log("1", match_pw)
-                console.log("2", match_pw2)
                 match_word.classList.remove("pwMatch");
                 match_word.textContent = "비밀번호를 확인해주세요";
                 match_word.style.color = "red";

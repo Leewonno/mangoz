@@ -20,8 +20,6 @@ async function s_like(num) {
 async function s_like_check(num){
     const like_element = document.querySelector('.playbar_like');
     const id = num;
-    console.log(id);
-
     const response = await axios({
         method:"get",
         url:"/song/like/check",

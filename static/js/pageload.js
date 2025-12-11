@@ -7,7 +7,6 @@
     })
 
     $(window).on('popstate', async function(e){
-        console.log(location.href);
         await $('main').load(location.href+ " main>section");
         scriptSend(location.href);
     })
@@ -17,7 +16,6 @@
         const encodedQ = encodeURIComponent(search_term);
         if(e.keyCode == 13){
             let move_href = "/search?q=" + encodedQ;
-            console.log(move_href);
             history.pushState(null, null, move_href);
             $('main').load(move_href+ " main>section");
         }
@@ -47,17 +45,4 @@ function scriptSend(hrefs){
 
         
     });
-
-    // fetch(hrefs)
-    // .then(response => response.text())
-    // .then(data => {
-    //     var $data = $(data);
-    //     // jQuery 객체에서 <script> 태그를 선택합니다.
-    //     var $scriptTags = $data.filter('script');
-    //     console.log($scriptTags)
-
-    //     console.log(data);
-    //     // 받아온 데이터로 DOM을 업데이트합니다.
-    //     document.getElementById("sc").innerHTML = data;
-    // });
 }

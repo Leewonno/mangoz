@@ -95,7 +95,6 @@
                 alert("비밀번호가 일치합니다.");
             };
             
-            console.log(path.src);
             const res = await axios({
                 method: 'PATCH',
                 url: '/profile/pw',
@@ -107,7 +106,6 @@
                     //token:localStorage.getItem('token')
                 }
             });
-            console.log(res.data.result);
             if(res.data.result) {
                 alert("회원정보 수정이 완료되었습니다.");
                 document.location.href = "/";
@@ -157,7 +155,6 @@
                     'Content-Type' : 'multipart/form-data',
                 },
             });
-            console.log(res.data.location)
             img.src = res.data.location;
         }
 

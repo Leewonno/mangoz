@@ -30,24 +30,7 @@ let now_play = 0;
 let pl =[];
 let playlist_num;
 
-// modal_play_icon.addEventListener('click', (e)=>{
-//     console.log(play.checked)
-//     if(play.checked == true){
-//         audio.play();
-//         play_icon.className = "fa-solid fa-pause";
-//         modal_play_icon.className = "fa-solid fa-pause";
-//         play.setAttribute('checked', false);
-//     }
-//     else{
-//         audio.pause();
-//         play_icon.className = "fa-regular fa-circle-play fa-lg";
-//         modal_play_icon.className = "fa-solid fa-play";
-//         play.setAttribute('checked', true);
-//     }
-// })
-
 play.addEventListener('click', (e)=>{
-    console.log(play.checked)
     if(play.checked == true){
         audio.play();
         play_icon.className = "fa-solid fa-pause";
@@ -192,7 +175,6 @@ async function music(song_id){
 
 async function playlist(num){
     playlist_num = num;
-    console.log("플리 id", playlist_num);
     const playlist = await axios({
         method:"get",
         url:"/playlist/getid",
@@ -256,12 +238,9 @@ async function playlist(num){
 }
 
 async function songDelete(temp, num) {
-    console.log(temp);
     const songids = document.getElementById(num)
     songids.remove();
     const deleteSongId = document.querySelectorAll('.inputValue');
-
-    // console.log('deleteSongId');
 
     let updateSongList = ""
     for ( let i=0; i < deleteSongId.length; i++ ) {
@@ -280,11 +259,9 @@ async function songDelete(temp, num) {
 
     now_play--;
     pl = updateSongList.split(',');
-    // console.log('updateSongList' ,updateSongList)
 };
 
 async function updateSong(temp){
-    // console.log("up", temp)
     const updateSongId = document.querySelectorAll('.inputValue');
     
     let check_count;
@@ -294,8 +271,6 @@ async function updateSong(temp){
             check_count = i;
         }
     }
-    // console.log("바뀐 위치", up_count)
-    // console.log('deleteSongId');
 
     let updateSongList = ""
     for ( let i=0; i < updateSongId.length; i++ ) {
@@ -315,7 +290,6 @@ async function updateSong(temp){
         }
     })
 
-    // console.log('updateSongList' ,updateSongList);
     now_play = check_count;
     pl = updateSongList.split(',');
 }
@@ -338,13 +312,11 @@ async function prevPlay(){
 
 // 노래 끝나면 다음 노래 재생
 audio.addEventListener("ended", function(){
-    console.log("실행")
     nextPlay();
 });
 
 $('.modal_open').click(function(e) {
     if(!$(e.target).hasClass("toggle") && !$(e.target).hasClass("label")) {
-        console.log(e.target);
         $("input[type=checkbox]").prop("checked", false);
     }
 });
@@ -393,7 +365,6 @@ function handleDrop(e) {
   
   // 드롭 완료 후 요소를 다시 표시하기 위해 opacity를 원래대로 설정
   dragSrcElement.style.opacity = '1';
-    //console.log(this);
   updateSong(this);
 
   return false;

@@ -121,7 +121,6 @@
             else{
                 alert("오류 발생");
             }
-            console.log(res);
         }
 
         async function like(num) {
@@ -136,7 +135,6 @@
                 }
             });
             
-            console.log("res", res)
             if(res.data.liked) {
                 like_element.innerHTML = '<i class="fa-solid fa-heart" style="color: #FCD06B;" ></i>'
             } else {

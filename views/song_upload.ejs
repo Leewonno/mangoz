@@ -53,8 +53,6 @@
         async function imgUpload(event) {
             try {
                 const file = document.querySelector('#cover');
-                console.log(file.files[0]);
-
                 const formData = new FormData();
                 //append(key, value)
                 //!중요: 파일은 항상 제일 마지막에 선언
@@ -68,7 +66,6 @@
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                console.log('res', res);
                 img_url = res.data.location;
             } catch (error) {
                 console.log(error)
@@ -79,8 +76,6 @@
         async function audioUpload(event) {
             try {
                 const file = document.querySelector('#song');
-                console.log(file.files[0]);
-
                 const formData = new FormData();
                 //append(key, value)
                 //!중요: 파일은 항상 제일 마지막에 선언
@@ -94,7 +89,6 @@
                         'Content-Type': 'multipart/form-data',
                     },
                 });
-                console.log('res', res);
                 audio_url = res.data.location;
             } catch (error) {
                 console.log(error)
@@ -116,14 +110,6 @@
             const release_date = document.getElementById("release_date").value;
             const cover_url = img_url;
             const song_url = audio_url;
-            console.log('cover', cover_url);
-            console.log('song_url', song_url)
-            // const song_url
-
-            // const test = "https://kdt-wonno2.s3.ap-northeast-2.amazonaws.com/audio/DICE.mp3"
-            // const test2 = test.split("/")
-            // console.log(test2[3] + "/" + test2[4]);
-
             try{
                 const res = await axios({
                     method: 'POST',
@@ -142,7 +128,6 @@
                         song_url: audio_url
                     }
                 });
-                console.log(res);
                 if(res){
                     alert("완료");
                 }
@@ -152,10 +137,6 @@
             }catch(err){
                 console.log(err);
             }
-            
-
-
-            console.log("실행");
         }
 
         document.getElementById('lyrics').addEventListener('paste', function(event) {

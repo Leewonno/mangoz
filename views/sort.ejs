@@ -123,7 +123,6 @@
         var sort = window.location.search; 
         var string = new URLSearchParams(sort);
         var sortBy = string.get("sort"); // "date"
-        console.log(sortBy);
         sortSongs(sortBy)
         
         function sortSongs(sortBy) {
@@ -132,12 +131,9 @@
                 url: `/song/sort?sort=${sortBy}`,
             }).then((res) => {
                 const tbody = document.querySelector("tbody");
-
-                console.log(tbody.firstChild)
                 while (tbody.firstChild) {
                     tbody.removeChild(tbody.firstChild);
                 }
-                console.log(res.data.songs.length);
                 for (let i = 0; i < res.data.songs.length; i++) {
                     const song = res.data.songs[i];
                     const row = document.createElement("tr");
@@ -199,13 +195,11 @@
         function startGenreToggle() {
             var genreMenu = document.getElementById("genre_menu");
            
-            console.log("Before toggle: " + genreMenu.style.display);
             if (genreMenu.style.display === "none" || genreMenu.style.display === "") {
                 genreMenu.style.display = "block";
             } else {
                 genreMenu.style.display = "none";
             }
-            console.log("After toggle: " + genreMenu.style.display);        
         }
 
         async function sortByGenre(genre) {
@@ -213,18 +207,12 @@
 
                 const encodedGenre = encodeURIComponent(genre);
 
-                console.log("Fetching data for genre: " + encodedGenre);
-                console.log(encodedGenre);
-
                 const res = await axios({
                     method: "get",
                     url: `/song/sort/genre?genre=${encodedGenre}`,
                 });
 
-                console.log(res);
                 const tbody = document.querySelector("tbody");
-
-                console.log('tbody.firstChild', tbody.firstChild);
 
                 const songDetailRows = document.querySelectorAll(".song_detail");
                 songDetailRows.forEach((row) => {
