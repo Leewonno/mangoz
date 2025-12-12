@@ -32,6 +32,7 @@ exports.getPlaySong = (req, res, next) => {
   // headObject는 파일이 있나 없나 먼저 체크 용도로 이용
   s3.headObject(params, (err, data) => {
     if (err) {
+      console.log(data)
       console.error('파일 크기를 가져오는 중 오류 발생:', err);
       res.status(500).send('스트리밍 중 오류가 발생했습니다.');
       return;
@@ -61,7 +62,7 @@ exports.getPlaySong = (req, res, next) => {
 
       // S3에서 부분 스트리밍
       const s3Params = {
-        Bucket: 'kdt-wonno2',
+        Bucket: 'nmixxfans',
         Key: fileName,
         Range: `bytes=${start}-${end}`,
       };

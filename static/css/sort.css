@@ -2,6 +2,7 @@
     display: flex;
     margin-top: 50px;
     justify-content: center;
+    min-height: 100vh;
 }
 
 .sort_section .song_category{
@@ -70,16 +71,6 @@
 }
 
 /*테이블*/
-
-.sort_section table {
-    /* display: inline-block;
-    text-align: left;
-    padding:  0px 20px; */
-}
-
-.sort_section .list_thead{
-    /* border-bottom: 1px solid black; */
-}
 
 .sort_section .defult {
     font-size: medium;

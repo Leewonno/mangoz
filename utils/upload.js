@@ -11,7 +11,7 @@ const s3 = new aws.S3({
 const imageStorage = multerS3({
     s3: s3,
     bucket: process.env.AWS_BUCKET,
-    acl: 'public-read',
+    // acl: 'public-read',
     key: (req, file, cb) => {
         const uniqueFileName = Date.now().toString() + "-" + Buffer.from(file.originalname, 'latin1').toString('utf8');
         cb(null, "img/" + uniqueFileName); 
@@ -21,7 +21,7 @@ const imageStorage = multerS3({
 const audioStorage = multerS3({
     s3: s3,
     bucket: process.env.AWS_BUCKET,
-    acl: 'public-read',
+    // acl: 'public-read',
     key: (req, file, cb) => {
         const uniqueFileName = Date.now().toString() + "-" + Buffer.from(file.originalname, 'latin1').toString('utf8');
         cb(null, "audio/" + uniqueFileName); 

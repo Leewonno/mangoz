@@ -23,9 +23,8 @@ header {
   width: 100%;
   display: flex;
   justify-content: center;
-  margin-top: 20px;
-  border-bottom: 1px solid gray;
-  /* box-shadow: 0 2px 4px 0 rgba(247, 255, 233, 0.24); */
+  box-shadow: rgba(0, 0, 0, 0.357) 0px -9px 15px 1px;
+  border-bottom: 1px solid #f5f5f5;
 }
 
 .header_box {
@@ -46,7 +45,7 @@ header a {
 }
 
 header a:hover {
-  transform: scale(1.1);
+  transform: scale(1.05);
 }
 
 header .logo {

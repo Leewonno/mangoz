@@ -1,6 +1,5 @@
 const jwt = require('jsonwebtoken');
 const models = require('../database/db');
-const roomList = [];
 const { Op } = require('sequelize');
 let room;
 let chatRoom;
